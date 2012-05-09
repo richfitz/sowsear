@@ -17,14 +17,18 @@ parse.sowsear <- function(script) {
   ##  c: ...blank lines
   type[grepl("^[[:space:]]*$", lines)] <- "blank"
 
- 
   ## Collapse some basic types:
   obj <- rle(type)
   tmp <- paste(substr(obj$values, 1, 1), collapse="")
-  tmp <- gsub("mbm", "mmm", tmp) # markup, blank, markup -> markup
-  tmp <- gsub("cbc", "ccc", tmp) # code, blank, code -> code
-  tmp <- gsub("obc", "occ", tmp) # option, blank, code, -> option, code
-  tmp <- gsub("b",   "m",   tmp) # remaining blanks markup
+  ## Replace blanks in code blocks
+  ##   code   / blank / code
+  ##   option / blank / code
+  ## with code:
+  ##   orig   / code  / code
+  tmp <- gsub("(?<=[co])b(?=c)", "c", tmp, perl=TRUE)
+  ## Remaining blanks are markup
+  tmp <- gsub("b",   "m",   tmp)
+  ## Quick sanity check:
   if ( grepl("ob?m", tmp) )
     stop("Detected nonsensical option before markup")
 
