@@ -6,37 +6,7 @@ parse.sowsear <- function(script) {
   ## Rnw files)
   lines <- lines[!grepl("^\\#{3}", lines)]
 
-  ## Everything is code by default.
-  type <- rep("code", length(lines))
-
-  ## 2a: Determine which lines are markup; these begin with exactly
-  ## two hashes, and then whitespace.
-  type[grepl("^\\#{2}[[:space:]]", lines)] <- "markup"
-  ##  b: ...lines that are chunk options ( '##+')
-  type[grepl("^\\#{2}\\+", lines)] <- "option"
-  ##  c: ...blank lines
-  type[grepl("^[[:space:]]*$", lines)] <- "blank"
-
-  ## Collapse some basic types:
-  obj <- rle(type)
-  tmp <- paste(substr(obj$values, 1, 1), collapse="")
-  ## Replace blanks in code blocks
-  ##   code   / blank / code
-  ##   option / blank / code
-  ## with code:
-  ##   orig   / code  / code
-  tmp <- gsub("(?<=[co])b(?=c)", "c", tmp, perl=TRUE)
-  ## Remaining blanks are markup
-  tmp <- gsub("b",   "m",   tmp)
-  ## Quick sanity check:
-  if ( grepl("ob?m", tmp) )
-    stop("Detected nonsensical option before markup")
-
-  ## Put it back together:
-  tr <- sort(unique(obj$value))
-  names(tr) <- substr(tr, 1, 1)
-  obj$values <- tr[strsplit(tmp, NULL)[[1]]]
-  type <- inverse.rle(obj)
+  type <- sowsear.classify(lines)
 
   obj <- rle(type)
   contents <- split(lines, rep(seq_along(obj$lengths), obj$lengths))
@@ -99,4 +69,38 @@ sowsear <- function(script, type=NULL, output=NULL) {
   out <- process.sowsear(blocks, type)
   writeLines(out, output)
   invisible(TRUE)
+}
+
+sowsear.classify <- function(lines) {
+  ## Everything is code by default.
+  type <- rep("code", length(lines))
+
+  ## 2a: Determine which lines are markup; these begin with exactly
+  ## two hashes, and then whitespace.
+  type[grepl("^\\#{2}[[:space:]]", lines)] <- "markup"
+  ##  b: ...lines that are chunk options ( '##+')
+  type[grepl("^\\#{2}\\+", lines)] <- "option"
+  ##  c: ...blank lines
+  type[grepl("^[[:space:]]*$", lines)] <- "blank"
+
+  ## Collapse some basic types:
+  obj <- rle(type)
+  tmp <- paste(substr(obj$values, 1, 1), collapse="")
+  ## Replace blanks in code blocks
+  ##   code   / blank / code
+  ##   option / blank / code
+  ## with code:
+  ##   orig   / code  / code
+  tmp <- gsub("(?<=[co])b(?=c)", "c", tmp, perl=TRUE)
+  ## Remaining blanks are markup
+  tmp <- gsub("b",   "m",   tmp)
+  ## Quick sanity check:
+  if ( grepl("ob?m", tmp) )
+    stop("Detected nonsensical option before markup")
+
+  ## Put it back together:
+  tr <- sort(unique(obj$value))
+  names(tr) <- substr(tr, 1, 1)
+  obj$values <- tr[strsplit(tmp, NULL)[[1]]]
+  inverse.rle(obj)
 }
