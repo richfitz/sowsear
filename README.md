@@ -1,5 +1,7 @@
 # sowsear: Make Silk (knitr files) from a sow's ear (an R script)
 
+[![Build Status](https://travis-ci.org/richfitz/sowsear.png?branch=master)](https://travis-ci.org/richfitz/sowsear)
+
 Make silk from a sow's ear by converting a plain R script into
 something that can be knit()'ed with knitr!
 
