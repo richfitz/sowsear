@@ -76,8 +76,8 @@ sowsear.classify <- function(lines) {
   type <- rep("code", length(lines))
 
   ## 2a: Determine which lines are markup; these begin with exactly
-  ## two hashes, and then whitespace.
-  type[grepl("^\\#{2}[[:space:]]", lines)] <- "markup"
+  ## two hashes, and then perhaps whitespace.
+  type[grepl("^\\#{2}[[:space:]]?", lines)] <- "markup"
   ##  b: ...lines that are chunk options ( '##+')
   type[grepl("^\\#{2}\\+", lines)] <- "option"
   ##  c: ...blank lines
