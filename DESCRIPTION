@@ -1,10 +1,10 @@
 Package: sowsear
-Title: Report Generation From Plain R Scripts
+Title: Report generation from plain R scripts
 Version: 0.1-1
 Date: 2012-05-06
-Author: Richard G. FitzJohn <fitzjohn@zoology.ubc.ca>
-Maintainer: Richard G. FitzJohn <fitzjohn@zoology.ubc.ca>
-Depends: R (>= 2.10), knitr
+Author: Richard G. FitzJohn <rich.fitzjohn@gmail.com>
+Maintainer: Richard G. FitzJohn <rich.fitzjohn@gmail.com>
+Depends: R (>= 2.10)
 License: GPL (>=2)
 Description: Make silk from a sow's ear by converting a plain R script
   into something that can be knit()'ed with knitr!
