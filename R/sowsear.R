@@ -10,16 +10,16 @@ parse.sowsear <- function(script) {
 
   obj <- rle(type)
   contents <- split(lines, rep(seq_along(obj$lengths), obj$lengths))
-  blocks <- mapply(list, type=obj$value, contents=contents,
+  blocks <- mapply(list, type=obj$values, contents=contents,
                    SIMPLIFY=FALSE)
   names(blocks) <- NULL
 
   ## Strip off comments from marked up sections...
-  for ( i in which(obj$value == "markup") )
+  for ( i in which(obj$values == "markup") )
     blocks[[i]]$contents <- sub("^## ?", "", blocks[[i]]$contents)
 
   ## And from options:
-  for ( i in which(obj$value == "option") )
+  for ( i in which(obj$values == "option") )
     blocks[[i]]$contents <-
       paste(sub("^##\\+ *", "", blocks[[i]]$contents),
             collapse=" ")
@@ -99,7 +99,7 @@ sowsear.classify <- function(lines) {
     stop("Detected nonsensical option before markup")
 
   ## Put it back together:
-  tr <- sort(unique(obj$value))
+  tr <- sort(unique(obj$values))
   names(tr) <- substr(tr, 1, 1)
   obj$values <- tr[strsplit(tmp, NULL)[[1]]]
   inverse.rle(obj)
