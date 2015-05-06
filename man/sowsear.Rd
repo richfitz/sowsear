@@ -10,7 +10,7 @@
   with three or more hashes ("###") are ignored.
 }
 \usage{
-sowsear(script, type=NULL, output=NULL)
+sowsear(script, type="Rmd", output=NULL)
 }
 \arguments{
   \item{script}{An R script file.}
@@ -20,8 +20,9 @@ sowsear(script, type=NULL, output=NULL)
     the extension of \code{output}.}
 
   \item{output}{An output file name.  If not given, it is constructed
-    from the input file name and the conversion type.  At least one of
-    \code{output} and \code{type} must be given.}
+    from the input file name and the conversion type.  If neither 
+    \code{output} nor \code{type} are given, output will be an Rmd file
+    with the same base name as \code{script}.}
 }
 \value{
   Invisible \code{TRUE} on success.

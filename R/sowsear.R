@@ -51,7 +51,7 @@ process.sowsear <- function(blocks, type) {
   out
 }
 
-sowsear <- function(script, type=NULL, output=NULL) {
+sowsear <- function(script, type="Rmd", output=NULL) {
   types <- c("Rnw", "Rmd")
   if ( is.null(type) ) {
     if ( is.null(output) )
