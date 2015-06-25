@@ -22,3 +22,5 @@ To this
     ```
 
 which can then be run through `knit`.
+
+Note that a version of `sowsear` is directly available in knitr as [`spin`](http://www.rdocumentation.org/packages/knitr/functions/spin), though with different defaults.
